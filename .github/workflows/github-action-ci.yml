@@ -63,44 +63,31 @@ jobs:
       - name: Push Latest Image
         run: docker push $IMAGE_NAME:latest
 
-      # Deploy
-      - name: Deploy
-        run: docker compose up -d
+  deploy:
+    name: Deploy to EC2
 
-  # deploy:
-  #   name: Deploy to EC2
+    needs: build
 
-  #   needs: build
+    runs-on: ubuntu-latest
 
-  #   runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Application
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
 
-  #   steps:
-  #     - name: Deploy Application
-  #       uses: appleboy/ssh-action@v1.2.0
-  #       with:
-  #         host: ${{ secrets.HOST }}
-  #         username: ${{ secrets.USERNAME }}
-  #         key: ${{ secrets.SSH_KEY }}
+          script: |
 
-  #         script: |
+            cd /home/ubuntu/climate-app
 
-  #           cd /home/ubuntu/climate-app
+            docker login \
+              -u ${{ secrets.DOCKER_USERNAME }} \
+              -p ${{ secrets.DOCKER_PASSWORD }}
 
-  #           docker login \
-  #             -u ${{ secrets.DOCKER_USERNAME }} \
-  #             -p ${{ secrets.DOCKER_PASSWORD }}
+            docker pull ${{ env.IMAGE_NAME }}:latest
 
-  #           docker pull ${{ env.IMAGE_NAME }}:latest
+            docker compose up -d
 
-  #           docker network inspect climate-cast >/dev/null 2>&1 || \
-  #           docker network create climate-cast
-
-  #           docker compose down
-
-  #           docker compose pull
-
-  #           docker compose up -d
-
-  #           docker image prune -af
-
-  #           docker ps
+            docker ps
