@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE_NAME: dattarahegaonkar09/climate-app
+  IMAGE_NAME: ${{ vars.DOCKER_IMAGE}}
   NODE_VERSION: 18
 
 jobs:
