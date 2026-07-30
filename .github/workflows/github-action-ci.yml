@@ -90,6 +90,6 @@ jobs:
 
             docker pull ${{ env.IMAGE_NAME }}:latest
 
-            docker-compose up -d
+            docker compose up -d
 
             docker ps
