@@ -63,6 +63,10 @@ jobs:
       - name: Push Latest Image
         run: docker push $IMAGE_NAME:latest
 
+      # Deploy
+      - name: Deploy
+        run: docker compose up -d
+
   # deploy:
   #   name: Deploy to EC2
 
