@@ -80,16 +80,18 @@ jobs:
 
           script: |
 
-            git clone https://github.com/DattaRahegaonkar/Github-Actions.git
-
             cd /home/ubuntu/Github-Actions
 
             docker login \
               -u ${{ secrets.DOCKER_USERNAME }} \
               -p ${{ secrets.DOCKER_PASSWORD }}
 
+            docker compose down
+
             docker pull ${{ env.IMAGE_NAME }}:latest
 
             docker compose up -d
+
+            docker image prune -af
 
             docker ps
