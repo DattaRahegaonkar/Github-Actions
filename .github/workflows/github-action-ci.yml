@@ -80,7 +80,9 @@ jobs:
 
           script: |
 
-            cd /home/ubuntu/climate-app
+            git clone https://github.com/DattaRahegaonkar/Github-Actions.git
+
+            cd /home/ubuntu/Github-Actions
 
             docker login \
               -u ${{ secrets.DOCKER_USERNAME }} \
